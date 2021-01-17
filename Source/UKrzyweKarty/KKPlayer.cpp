@@ -26,6 +26,7 @@ AKKPlayer::AKKPlayer()
 	PrimaryActorTick.bCanEverTick = true;
 
 	SetReplicates(true);
+	bUseControllerRotationYaw = true;
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
 	SetRootComponent(SpringArm);

@@ -63,6 +63,7 @@ void ASpawnGrid::MakeCardsSpawn(int32 OwnerID) // Called on the server
 			GetWorldTimerManager().SetTimer(Handle, SetBase, 1.f, false);
 		}
 		
+		SpawnActors[i]->Mesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
 		SpawnActors[i]->SetActorScale3D(FVector(0.55));
 	}
 }

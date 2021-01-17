@@ -26,8 +26,8 @@ public:
 	virtual void PassiveAbility(UGameObject* GO) override; //Strza³y Rozrywaj¹ce
 
 protected:
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<AArrow> Arrow;
+	//UPROPERTY(EditAnywhere)
+	//	TSubclassOf<AArrow> Arrow;
 	
 	int32 CountAttacks = 0;
 };

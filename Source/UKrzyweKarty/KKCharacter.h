@@ -86,7 +86,7 @@ protected:
 	UPROPERTY(Replicated, BlueprintReadWrite)
 		bool bIsPlacedOnTheMap = false; // is character already on map?
 
-	bool bIsAllowedToAttack = true; // used when character block Strength
+	bool bIsAllowedToAttack = true; // used when character block attack
 	bool bIsAllowedToUseAbility = true; // used when character block ability
 	bool bIsAbleToMove = true;
 
