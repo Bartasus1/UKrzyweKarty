@@ -114,7 +114,7 @@ void AKKPlayer::SelectCurrent()
 		CurrentCharacterWidget = CreateWidget(GetWorld(), CurrentCharacterWidgetClass);
 		CurrentCharacterWidget->AddToViewport();
 
-		//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, GO->CurrentCharacter->name);
+		//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, GO->CurrentCharacter->Name);
 	}
 	else
 	{

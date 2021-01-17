@@ -148,7 +148,7 @@ bool AKKCharacter::Attack(UGameObject *GO, bool bIsInLine)
 
 void AKKCharacter::SetCharacterName_Implementation()
 {
-	TextName->SetText(FText::FromString(name));
+	TextName->SetText(FText::FromString(Name));
 	TextName->SetTextRenderColor(FColor::Red);
 	TextName->SetRelativeLocationAndRotation(FVector(42, 18, 170), FRotator(0, -90, 0));
 }
@@ -176,7 +176,7 @@ void AKKCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(AKKCharacter, name);
+	DOREPLIFETIME(AKKCharacter, Name);
 
 	DOREPLIFETIME(AKKCharacter, Strength);
 	DOREPLIFETIME(AKKCharacter, Defense);

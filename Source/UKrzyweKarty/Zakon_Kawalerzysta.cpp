@@ -15,7 +15,7 @@ AZakon_Kawalerzysta::AZakon_Kawalerzysta()
 	this->MaxHealth = Health;
 	this->Mana = 6;
 	this->MaxMana = Mana;
-	this->name = "Kawalerzysta";
+	this->Name = "Kawalerzysta";
 }
 
 

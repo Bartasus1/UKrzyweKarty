@@ -15,7 +15,7 @@ AZakon_Kusznik::AZakon_Kusznik()
 	this->MaxMana = Mana;
 	this->bIsRanged = true;
 	this->AttackDistance = 3;
-	this->name = "Kusznik";
+	this->Name = "Kusznik";
 }
 
 void AZakon_Kusznik::ActiveAbility(UGameObject* GO)

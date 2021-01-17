@@ -13,7 +13,7 @@ AZakon_Baza::AZakon_Baza()
 	bIsAbleToMove = false;
 	bIsAllowedToAttack = false;
 
-	name = "Baza Zakonu";
+	Name = "Baza Zakonu";
 }
 
 void AZakon_Baza::BeginPlay()

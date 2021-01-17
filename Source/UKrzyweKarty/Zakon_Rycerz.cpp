@@ -14,7 +14,7 @@ AZakon_Rycerz::AZakon_Rycerz()
 	this->MaxHealth = Health;
 	this->Mana = 6;
 	this->MaxMana = Mana;
-	this->name = "Rycerz";
+	this->Name = "Rycerz";
 }
 
 void AZakon_Rycerz::ActiveAbility(UGameObject* GO)

@@ -14,7 +14,7 @@ AZakon_Paladyn::AZakon_Paladyn()
 	this->MaxHealth = Health;
 	this->Mana = 10;
 	this->MaxMana = Mana;
-	this->name = "Paladyn";
+	this->Name = "Paladyn";
 }
 
 void AZakon_Paladyn::ActiveAbility(UGameObject* GO)

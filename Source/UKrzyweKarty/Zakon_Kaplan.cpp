@@ -14,7 +14,7 @@ AZakon_Kaplan::AZakon_Kaplan()
 	this->MaxHealth = Health;
 	this->Mana = 15;
 	this->MaxMana = Mana;
-	this->name = "Kaplan";
+	this->Name = "Kaplan";
 }
 
 	

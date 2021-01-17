@@ -26,7 +26,7 @@ void AZakon_Grid::BeginPlay()
 		
 		SpawnActors[i]->SetActorScale3D(FVector(0.5, 0.5, 0.5));
 		SpawnActors[i]->TextName->SetTextRenderColor(FColor::Red);
-		SpawnActors[i]->TextName->SetText(SpawnActors[i]->name);
+		SpawnActors[i]->TextName->SetText(SpawnActors[i]->Name);
 		SpawnActors[i]->SetReplicates(true);
 		SpawnActors[i]->TextName->SetRelativeLocationAndRotation(FVector(42, 18, 170),FRotator(0,-90,0));
 	}

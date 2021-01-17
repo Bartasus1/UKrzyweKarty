@@ -14,7 +14,7 @@ AZakon_Halabardzista::AZakon_Halabardzista()
 	this->MaxHealth = Health;
 	this->Mana = 4;
 	this->MaxMana = Mana;
-	this->name = "Pikinier";
+	this->Name = "Pikinier";
 }
 
 void AZakon_Halabardzista::ActiveAbility(UGameObject* GO)

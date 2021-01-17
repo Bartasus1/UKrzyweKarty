@@ -51,7 +51,7 @@ protected:
 		class ATile* OwnedTile = nullptr;
 
 	UPROPERTY(Replicated, BlueprintReadWrite)
-		FString name;
+		FString Name;
 
 	UPROPERTY(Replicated, BlueprintReadWrite)
 		int32 Strength = 0;

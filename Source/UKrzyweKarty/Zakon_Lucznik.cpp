@@ -17,7 +17,7 @@ AZakon_Lucznik::AZakon_Lucznik()
 	this->MaxMana = Mana;
 	this->bIsRanged = true;
 	this->AttackDistance = 3;
-	this->name = "Lucznik";
+	this->Name = "Lucznik";
 }
 
 
