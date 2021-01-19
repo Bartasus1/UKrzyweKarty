@@ -67,7 +67,7 @@ void AKKPlayer::Tick(float DeltaTime)
 void AKKPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 
 	PlayerInputComponent->BindAction("ZoomIn", IE_Pressed, this, &AKKPlayer::ZoomIn);
@@ -102,7 +102,6 @@ void AKKPlayer::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetim
 void AKKPlayer::SelectCurrent()
 {
 	GO->CurrentCharacter = CastRayForCharacter(); //Client side selecting Character
-	//GEngine->AddOnScreenDebugMessage(-1, 4.f, FColor::Red, FString::FromInt(PlayerID));
 
 	if (GO->CurrentCharacter && GO->CurrentCharacter->GetOwner() == this)
 	{
@@ -382,7 +381,7 @@ void AKKPlayer::OnRep_IsMyTurn()
 	{
 		DisableInput(Cast<AKKPlayerController>(GetController()));
 	}
-
+	
 	CreateWidget(GetWorld(), ChangeTurnWidgetClass)->AddToViewport();
 
 	//if(HasAuthority())

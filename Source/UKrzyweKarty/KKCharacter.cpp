@@ -2,6 +2,8 @@
 
 
 #include "KKCharacter.h"
+#include "KKGameState.h"
+#include "KKPlayer.h"
 #include "TileMap.h"
 #include "Tile.h"
 #include "GameObject.h"
@@ -68,6 +70,13 @@ void AKKCharacter::KillCharacter(UGameObject * GO)
 {
 	Health = 0;
 	bIsDead = true;
+
+	if (GO->TargetCharacter->Name.Contains("Baza"))
+	{
+		AKKGameState* GS = Cast<AKKGameState>(GetWorld()->GetGameState());
+		GS->Winner = Cast<AKKPlayer>(GO->GetOwner());
+		GS->OnRep_Winner();
+	}
 
 	GO->TileMap->Tiles[OwnedTile->GetTileID()]->SetOwningCharacter(nullptr);
 	GO->TargetCharacter = nullptr;

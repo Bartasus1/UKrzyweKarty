@@ -59,6 +59,7 @@ void ASpawnGrid::MakeCardsSpawn(int32 OwnerID) // Called on the server
 					}
 				}
 			};
+
 			FTimerHandle Handle;
 			GetWorldTimerManager().SetTimer(Handle, SetBase, 1.f, false);
 		}

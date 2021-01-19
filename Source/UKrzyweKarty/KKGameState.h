@@ -6,6 +6,8 @@
 #include "GameFramework/GameStateBase.h"
 #include "KKGameState.generated.h"
 
+class AKKPlayer;
+
 /**
  * 
  */
@@ -17,12 +19,19 @@ class UKRZYWEKARTY_API AKKGameState : public AGameStateBase
 public:
 	AKKGameState();
 
+	UPROPERTY(ReplicatedUsing = OnRep_Winner)
+		AKKPlayer* Winner;
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
 		TSubclassOf<class ATileMap> TileMapClass;
 
 	UPROPERTY(Replicated, BlueprintReadWrite, Category = "Tile")
 		class ATileMap* TileMap;
 
+
+	UFUNCTION()
+		void OnRep_Winner();
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 

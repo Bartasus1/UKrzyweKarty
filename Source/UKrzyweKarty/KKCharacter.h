@@ -84,10 +84,10 @@ protected:
 	UPROPERTY(Replicated, BlueprintReadWrite)
 		bool bIsDead = false;
 	UPROPERTY(Replicated, BlueprintReadWrite)
-		bool bIsPlacedOnTheMap = false; // is character already on map?
+		bool bIsPlacedOnTheMap = false; // Is character already on map?
 
-	bool bIsAllowedToAttack = true; // used when character block attack
-	bool bIsAllowedToUseAbility = true; // used when character block ability
+	bool bIsAllowedToAttack = true; // Used when character block attack
+	bool bIsAllowedToUseAbility = true; // Used when character block ability
 	bool bIsAbleToMove = true;
 
 	// Called when the game starts or when spawned
