@@ -33,8 +33,8 @@ void ATileMap::BeginPlay()
 
 		ATile* BaseTile1 = GetWorld()->SpawnActor<ATile>(TileClass, FVector(0, 282, 0.5), GetActorRotation());
 		ATile* BaseTile2 = GetWorld()->SpawnActor<ATile>(TileClass, FVector(0, -282, 0.5), GetActorRotation());
-		BaseTile1->SetTileID(18);
-		BaseTile2->SetTileID(2);
+		BaseTile1->SetTileID(-2);
+		BaseTile2->SetTileID(-2);
 		Tiles.Push(BaseTile1);
 		Tiles.Push(BaseTile2);
 	}

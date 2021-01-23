@@ -4,9 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameStateBase.h"
+#include "Net/UnrealNetwork.h"
 #include "KKGameState.generated.h"
 
 class AKKPlayer;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FWinnerFound);
 
 /**
  * 
@@ -19,7 +22,7 @@ class UKRZYWEKARTY_API AKKGameState : public AGameStateBase
 public:
 	AKKGameState();
 
-	UPROPERTY(ReplicatedUsing = OnRep_Winner)
+	UPROPERTY(ReplicatedUsing = OnRep_Winner, Transient, BlueprintReadOnly)
 		AKKPlayer* Winner;
 
 
@@ -29,9 +32,14 @@ public:
 	UPROPERTY(Replicated, BlueprintReadWrite, Category = "Tile")
 		class ATileMap* TileMap;
 
+	//UPROPERTY(Replicated)
+	//	bool EndOfGame = false;
 
 	UFUNCTION()
 		void OnRep_Winner();
+
+	UPROPERTY(BlueprintAssignable)
+		FWinnerFound WinnerFound;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 

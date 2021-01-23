@@ -9,6 +9,7 @@
 #include "KKPlayerController.h"
 #include "KKPlayerState.h"
 #include "KKPlayer.h"
+#include "KKGameState.h"
 
 AKKGameMode::AKKGameMode()
 {
@@ -34,6 +35,15 @@ void AKKGameMode::ChangeInput()
 			PlayerTwo->OnRep_IsMyTurn();
 		}
 	//GEngine->AddOnScreenDebugMessage(-1, 4, FColor::Black, "Done");
+}
+
+void AKKGameMode::OnWin(AKKPlayer* Winner)
+{
+	AKKGameState* GS = GetGameState<AKKGameState>();
+	//GS->EndOfGame = true;
+	GS->Winner = Winner;
+	GS->OnRep_Winner();
+	
 }
 
 

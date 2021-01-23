@@ -381,9 +381,11 @@ void AKKPlayer::OnRep_IsMyTurn()
 	{
 		DisableInput(Cast<AKKPlayerController>(GetController()));
 	}
-	
-	CreateWidget(GetWorld(), ChangeTurnWidgetClass)->AddToViewport();
 
+	//if (!(Cast<AKKGameState>(GetWorld()->GetGameState())->EndOfGame))
+	//{
+	CreateWidget(GetWorld(), ChangeTurnWidgetClass)->AddToViewport();
+	//}
 	//if(HasAuthority())
 	//	GEngine->AddOnScreenDebugMessage(-1, 4, FColor::Cyan, "Server: " + FString::FromInt(bIsMyTurn));
 	//else

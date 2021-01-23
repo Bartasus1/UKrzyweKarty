@@ -2,7 +2,7 @@
 
 
 #include "KKCharacter.h"
-#include "KKGameState.h"
+#include "KKGameMode.h"
 #include "KKPlayer.h"
 #include "TileMap.h"
 #include "Tile.h"
@@ -61,6 +61,14 @@ int32 AKKCharacter::Distance(AKKCharacter * Target)
 	int32 TargetX = TargetTile->GetTileID() % 4;
 	int32 TargetY = TargetTile->GetTileID() / 4;
 
+	if (MyX == 1 || MyX == 2)
+	{
+		if (TargetTile->GetTileID() < 0)
+		{
+			return 0;
+		}
+	}
+
 	int32 Distance = FMath::Sqrt(( FMath::Pow(MyX - TargetX, 2) + FMath::Pow(MyY - TargetY, 2) ));
 
 	return Distance;
@@ -71,15 +79,19 @@ void AKKCharacter::KillCharacter(UGameObject * GO)
 	Health = 0;
 	bIsDead = true;
 
-	if (GO->TargetCharacter->Name.Contains("Baza"))
+	if (Name.Contains("Baza")) // Change it to BaseInterface in the future
 	{
-		AKKGameState* GS = Cast<AKKGameState>(GetWorld()->GetGameState());
-		GS->Winner = Cast<AKKPlayer>(GO->GetOwner());
-		GS->OnRep_Winner();
+		if (HasAuthority())
+		{
+			AKKGameMode* GM = Cast<AKKGameMode>(GetWorld()->GetAuthGameMode());
+			GM->OnWin(Cast<AKKPlayer>(GO->GetOwner()));
+		}
 	}
-
-	GO->TileMap->Tiles[OwnedTile->GetTileID()]->SetOwningCharacter(nullptr);
-	GO->TargetCharacter = nullptr;
+	else
+	{
+		GO->TileMap->Tiles[OwnedTile->GetTileID()]->SetOwningCharacter(nullptr);
+		GO->TargetCharacter = nullptr;
+	}
 
 	Destroy();
 }
@@ -128,6 +140,11 @@ bool AKKCharacter::Attack(UGameObject *GO, bool bIsInLine)
 	{
 		if ( GO->TargetCharacter->Health > 0 && Distance(GO->TargetCharacter) <= AttackDistance)
 		{
+			if (Distance(GO->TargetCharacter) == 0)
+			{
+				bIsInLine = false;
+			}
+
 			if (bIsInLine)
 			{
 				int32 TileID = GO->CurrentCharacter->OwnedTile->GetTileID();

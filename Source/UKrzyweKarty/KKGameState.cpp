@@ -10,7 +10,7 @@
 #include "Engine\Engine.h"
 #include "TileMap.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "Net/UnrealNetwork.h"
+
 
 
 AKKGameState::AKKGameState()
@@ -20,7 +20,7 @@ AKKGameState::AKKGameState()
 
 void AKKGameState::OnRep_Winner()
 {
-	UKismetSystemLibrary::QuitGame(GetWorld(), Cast<AKKPlayerController>(Winner->GetController()), EQuitPreference::Quit, true);
+	WinnerFound.Broadcast();
 }
 
 void AKKGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -29,7 +29,7 @@ void AKKGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 
 	DOREPLIFETIME(AKKGameState, TileMap);
 	DOREPLIFETIME(AKKGameState, Winner);
-
+	//DOREPLIFETIME(AKKGameState, EndOfGame);
 }
 
 void AKKGameState::BeginPlay()

@@ -7,6 +7,7 @@
 #include "KKGameMode.generated.h"
 
 class AKKCharacter;
+class AKKPlayer;
 /**
  * 
  */
@@ -20,14 +21,13 @@ public:
 	UPROPERTY(Transient, BlueprintReadWrite)
 		TArray<class AKKPlayerController*> Players;
 
-
-	//int32 Moves = 0;
-
 	bool bIsPlayerOneTurn = false;
 	bool bIsPlayerTwoTurn = true;
 
-	UFUNCTION(BlueprintCallable)
+	//UFUNCTION(BlueprintCallable)
 	void ChangeInput();
+
+	void OnWin(AKKPlayer* Winner);
 
 	UFUNCTION()
 	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
