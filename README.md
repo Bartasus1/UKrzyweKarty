@@ -1,4 +1,4 @@
-# <b>Krzywe Karty - gra karciana</b>
+# <b>Krzywe Karty - sieciowa gra karciana</b>
 <b>Multiplayer 3D card game </b>
 
 Cel:
