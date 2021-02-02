@@ -10,6 +10,6 @@
 
 AKKPlayerState::AKKPlayerState()
 {
-	SetReplicates(true);
+	bReplicates = true;
 }
 

@@ -25,7 +25,7 @@ AKKPlayer::AKKPlayer()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	SetReplicates(true);
+	bReplicates = true;
 	bUseControllerRotationYaw = true;
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
@@ -227,7 +227,7 @@ void AKKPlayer::MakeCharacterAttack_Implementation()
 	{
 		if (GO->CurrentCharacter->Attack(GO))
 		{
-			PlayAttackAnim();
+			PlayAttackAnimation();
 			MakeMove();
 		}
 	}
@@ -249,8 +249,8 @@ void AKKPlayer::AddOnPosition_Implementation(int32 Position)
 			{
 				MoveToTile(Tile);
 				Character->bIsPlacedOnTheMap = true;
-				PlaySpawnAnim();
-				GO->CurrentCharacter = nullptr;
+				PlaySpawnAnimation();
+				//GO->CurrentCharacter = nullptr;
 				MakeMove();
 			}
 		}
@@ -471,17 +471,17 @@ AKKCharacter * AKKPlayer::CastRayForCharacter()
 	return nullptr;
 }
 
-void AKKPlayer::PlayAttackAnim_Implementation()
+void AKKPlayer::PlayAttackAnimation_Implementation()
 {
-	if (GO->CurrentCharacter->AttackAnimation != NULL)
+	if (GO->CurrentCharacter->AttackAnimation != nullptr)
 	{
 		UAnimInstance* AnimInstance = GO->CurrentCharacter->Mesh->GetAnimInstance();
-		if (AnimInstance != NULL)
+		if (AnimInstance != nullptr)
 			AnimInstance->Montage_Play(GO->CurrentCharacter->AttackAnimation);
 	}
 }
 
-void AKKPlayer::PlaySpawnAnim_Implementation()
+void AKKPlayer::PlaySpawnAnimation_Implementation()
 {
 	if (GO->CurrentCharacter->SummonAnimation)
 	{

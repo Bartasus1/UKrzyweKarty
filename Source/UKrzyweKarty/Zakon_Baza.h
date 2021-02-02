@@ -17,6 +17,5 @@ class UKRZYWEKARTY_API AZakon_Baza : public AZakon
 public:
 	AZakon_Baza();
 
-	virtual void BeginPlay() override;
 	
 };

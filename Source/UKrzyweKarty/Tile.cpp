@@ -10,7 +10,7 @@ ATile::ATile()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
-	SetReplicates(true);
+	bReplicates = true;
 	SetReplicateMovement(true);
 
 	//NumberText = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Number"));
@@ -24,7 +24,11 @@ int32 ATile::GetTileID()
 
 AKKCharacter * ATile::GetOwningCharacter()
 {
-	return OwningCharacter;
+	if (OwningCharacter)
+	{
+		return OwningCharacter;
+	}
+	return nullptr;
 }
 
 void ATile::SetOwningCharacter(AKKCharacter * Character)

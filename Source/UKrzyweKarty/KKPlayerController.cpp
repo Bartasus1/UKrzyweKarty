@@ -8,7 +8,7 @@
 AKKPlayerController::AKKPlayerController()
 {
 	bShowMouseCursor = true;
-	SetReplicates(true);
+	bReplicates = true;
 	//bEnableClickEvents = true;
 	//bEnableTouchEvents = true;
 	DefaultMouseCursor = EMouseCursor::Crosshairs;

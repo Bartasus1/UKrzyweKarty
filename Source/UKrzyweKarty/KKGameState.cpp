@@ -15,7 +15,7 @@
 
 AKKGameState::AKKGameState()
 {
-	SetReplicates(true);
+	bReplicates = true;
 }
 
 void AKKGameState::OnRep_Winner()
@@ -39,6 +39,7 @@ void AKKGameState::BeginPlay()
 	if (HasAuthority())
 	{
 		TileMap = GetWorld()->SpawnActor<ATileMap>(TileMapClass, FVector::ZeroVector, FRotator::ZeroRotator);
+		CreateMap.Broadcast();
 	}
 }
 

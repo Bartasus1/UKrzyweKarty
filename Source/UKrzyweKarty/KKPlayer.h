@@ -32,7 +32,9 @@ public:
 	void AddOnPosition3();
 	
 	void GetIDFromController();
-	void GetMapFromGameState();
+
+	UFUNCTION(BlueprintCallable)
+		void GetMapFromGameState();
 
 	UFUNCTION(Server, Reliable)
 		void AddOnPosition(int32 position);
@@ -45,9 +47,9 @@ public:
 		void MakeCharacterAttack();
 
 	UFUNCTION(NetMulticast, Reliable)
-		void PlayAttackAnim();
+		void PlayAttackAnimation();
 	UFUNCTION(NetMulticast, Reliable)
-		void PlaySpawnAnim();
+		void PlaySpawnAnimation();
 
 	UFUNCTION(Server, Reliable)
 		void MoveCharacterForward();

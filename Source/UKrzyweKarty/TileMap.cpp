@@ -11,7 +11,7 @@ ATileMap::ATileMap()
 	PrimaryActorTick.bCanEverTick = false;
 
 	Tiles.Init(nullptr, 20);
-	SetReplicates(true);
+	bReplicates = true;
 }
 
 

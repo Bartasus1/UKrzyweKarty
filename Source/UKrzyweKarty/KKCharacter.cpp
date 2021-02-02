@@ -21,7 +21,7 @@ AKKCharacter::AKKCharacter()
 	Mesh->SetupAttachment(Pedestal);
 	TextName->SetupAttachment(Mesh);
 
-	SetReplicates(true);
+	bReplicates = true;
 	SetReplicateMovement(true);
 
 }
@@ -203,6 +203,7 @@ void AKKCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AKKCharacter, Name);
+	DOREPLIFETIME(AKKCharacter, OwnedTile);
 
 	DOREPLIFETIME(AKKCharacter, Strength);
 	DOREPLIFETIME(AKKCharacter, Defense);

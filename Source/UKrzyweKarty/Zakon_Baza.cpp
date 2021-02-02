@@ -16,7 +16,4 @@ AZakon_Baza::AZakon_Baza()
 	Name = "Baza Zakonu";
 }
 
-void AZakon_Baza::BeginPlay()
-{
 
-}
