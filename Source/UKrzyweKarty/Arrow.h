@@ -7,7 +7,6 @@
 
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
-#include "Components/StaticMeshComponent.h"
 
 #include "Arrow.generated.h"
 
