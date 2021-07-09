@@ -8,6 +8,8 @@
 #include "Net/UnrealNetwork.h"
 #include "SpawnPoint.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCardsSpawned);
+
 UCLASS()
 class UKRZYWEKARTY_API ASpawnPoint : public AActor
 {
@@ -17,8 +19,14 @@ public:
 	// Sets default values for this actor's properties
 	ASpawnPoint();
 
-	int GetPlayerID();
-	ASpawnGrid* GetSpawnGrid();
+	int GetPlayerID() const;
+	ASpawnGrid* GetSpawnGrid() const;
+
+	UFUNCTION()
+	void MakeSpawnGrid();
+
+	UPROPERTY(BlueprintAssignable)
+	FCardsSpawned CardsSpawned;
 
 	UFUNCTION()
 	void MakeSpawnGrid();

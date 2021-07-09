@@ -2,7 +2,6 @@
 
 
 #include "KKGameMode.h"
-#include "Engine\Engine.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "GameFramework/GameSession.h"
 #include "GameFramework/PlayerStart.h"
@@ -37,7 +36,7 @@ void AKKGameMode::ChangeInput()
 	//GEngine->AddOnScreenDebugMessage(-1, 4, FColor::Black, "Done");
 }
 
-void AKKGameMode::OnWin(AKKPlayer* Winner)
+void AKKGameMode::OnWin(AKKPlayer* Winner) const
 {
 	AKKGameState* GS = GetGameState<AKKGameState>();
 	//GS->EndOfGame = true;

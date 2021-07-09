@@ -37,6 +37,7 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FCardsSpawned CardsSpawned;
 
+
 	
 	UPROPERTY(Replicated, BlueprintReadWrite, Category = "Cards")
 	TArray <AKKCharacter*> SpawnActors;

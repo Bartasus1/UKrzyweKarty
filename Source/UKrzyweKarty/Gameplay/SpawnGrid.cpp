@@ -5,7 +5,6 @@
 #include "KKCharacter.h"
 #include "KKGameState.h"
 #include "TileMap.h"
-#include "TimerManager.h"
 #include "Net/UnrealNetwork.h"
 
 // Sets default values
@@ -32,7 +31,6 @@ void ASpawnGrid::MakeCardsSpawn(int32 OwnerID) // Called on the server
 	}
 
 	SpawnBase();
-	CardsSpawned.Broadcast();
 }
 
 void ASpawnGrid::SpawnBase()

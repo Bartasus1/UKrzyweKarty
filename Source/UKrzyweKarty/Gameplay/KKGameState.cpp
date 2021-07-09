@@ -9,6 +9,7 @@
 #include "Engine\World.h"
 #include "Engine\Engine.h"
 #include "TileMap.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 
@@ -40,6 +41,8 @@ void AKKGameState::BeginPlay()
 	{
 		TileMap = GetWorld()->SpawnActor<ATileMap>(TileMapClass, FVector::ZeroVector, FRotator::ZeroRotator);
 		CreatedMap.Broadcast();
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "GameState");	
 	}
 }
 

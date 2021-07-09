@@ -20,7 +20,7 @@
 // Sets default values
 AKKPlayer::AKKPlayer()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	bReplicates = true;
@@ -34,6 +34,12 @@ AKKPlayer::AKKPlayer()
 
 	GameObject = CreateDefaultSubobject<UGameObject>("GameObjects");
 	GameObject->SetIsReplicated(true);
+
+	SpringArm->TargetArmLength = 700.f;
+	SpringArm->SocketOffset = {0,0,200.f};
+	PlayerCamera->SetRelativeRotation(FRotator(-10,0,0));
+
+
 }
 
 
@@ -42,13 +48,32 @@ void AKKPlayer::BeginPlay()
 	Super::BeginPlay();
 
 	GetIDFromController();
-	GetMapFromGameState();
 	
 	if (!HasAuthority())
 	{
 		DisableInput(Cast<AKKPlayerController>(GetController()));
 		ChangeInput();
 	}
+
+	if(HasAuthority())
+	{
+		GetWorld()->GetGameState<AKKGameState>()->CreatedMap.AddDynamic(this, &AKKPlayer::GetMapFromGameState);
+
+		TArray<AActor*> FoundActors;
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnPoint::StaticClass(), FoundActors);
+		
+		for (auto &Point : FoundActors)
+		{
+			if(ASpawnPoint* SpawnPoint = Cast<ASpawnPoint>(Point))
+			{
+				SpawnPoint->CardsSpawned.AddDynamic(this, &AKKPlayer::FindPlayerCards);
+			}
+
+		}
+		
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Player" + FString::FromInt(PlayerID));
+	}
+
 }
 
 
@@ -415,31 +440,28 @@ void AKKPlayer::ActiveAbility()
 	}
 }
 
-void AKKPlayer::FindPlayerCards() // Stupid function needs to be called 1 sec after start
+void AKKPlayer::FindPlayerCards()
 {
 	AKKPlayerController* PlayerController = Cast<AKKPlayerController>(GetController());
 	if (PlayerController)
 	{
 		TArray<AActor*> FoundActors;
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnPoint::StaticClass(), FoundActors);
-		if (FoundActors.Num() > 0)
+		
+		for (auto &Point : FoundActors)
 		{
-			for (auto &Point : FoundActors)
+			ASpawnPoint* SpawnPoint = Cast<ASpawnPoint>(Point);
+			if (SpawnPoint && PlayerController->GetPlayerID() == SpawnPoint->GetPlayerID())
 			{
-				ASpawnPoint* SpawnPoint = Cast<ASpawnPoint>(Point);
-				if (PlayerController->GetPlayerID() == SpawnPoint->GetPlayerID())
+				PlayerCards = SpawnPoint->GetSpawnGrid()->SpawnActors;
+				for (auto &Card : PlayerCards)
 				{
-					PlayerCards = SpawnPoint->GetSpawnGrid()->SpawnActors;
-					for (auto &Card : PlayerCards)
+					if (Card)
 					{
-						if (Card)
-						{
-							Card->SetOwner(this);
-						}
+						Card->SetOwner(this);
 					}
-
-					break;
 				}
+				break;
 			}
 		}
 	}
@@ -509,9 +531,8 @@ void AKKPlayer::GetIDFromController()
 
 void AKKPlayer::GetMapFromGameState()
 {
-	if (AKKGameState* GS = Cast<AKKGameState>(GetWorld()->GetGameState()))
+	if (AKKGameState* GameState = Cast<AKKGameState>(GetWorld()->GetGameState()))
 	{
-		GameObject->TileMap = GS->TileMap;
-		//GEngine->AddOnScreenDebugMessage(-1, 4.f, FColor::Yellow, "GameObjectt map");
+		GameObject->TileMap = GameState->TileMap;
 	}
 }

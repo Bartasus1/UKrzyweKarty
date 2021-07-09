@@ -27,7 +27,7 @@ public:
 	//UFUNCTION(BlueprintCallable)
 	void ChangeInput();
 
-	void OnWin(AKKPlayer* Winner);
+	void OnWin(AKKPlayer* Winner) const;
 
 	UFUNCTION()
 	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;

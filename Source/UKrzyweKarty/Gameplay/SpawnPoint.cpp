@@ -2,9 +2,7 @@
 
 
 #include "SpawnPoint.h"
-
 #include "KKGameState.h"
-
 
 // Sets default values
 ASpawnPoint::ASpawnPoint()
@@ -12,20 +10,15 @@ ASpawnPoint::ASpawnPoint()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 	bReplicates = true;
-	if(GetWorld())
-	{
-		GetWorld()->GetGameState<AKKGameState>()->CreatedMap.AddDynamic(this, &ASpawnPoint::MakeSpawnGrid);
-	}
-    
 }
 
 
-int ASpawnPoint::GetPlayerID()
+int ASpawnPoint::GetPlayerID() const
 {
 	return PlayerID;
 }
 
-ASpawnGrid * ASpawnPoint::GetSpawnGrid()
+ASpawnGrid * ASpawnPoint::GetSpawnGrid() const
 {
 	return SpawnGrid;
 }
@@ -34,8 +27,11 @@ void ASpawnPoint::MakeSpawnGrid()
 {
 	if (HasAuthority())
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 4.f, FColor::Cyan, "Spawnpoint" + FString::FromInt(PlayerID));
 		SpawnGrid = GetWorld()->SpawnActor<ASpawnGrid>(SpawnGridClass, GetActorLocation(), GetActorRotation());
 		SpawnGrid->MakeCardsSpawn(PlayerID);
+
+		CardsSpawned.Broadcast();
 	}
 }
 
@@ -44,6 +40,12 @@ void ASpawnPoint::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if(HasAuthority())
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 4.f, FColor::Red, "Spawnpoint" + FString::FromInt(PlayerID));
+	
+		GetWorld()->GetGameState<AKKGameState>()->CreatedMap.AddDynamic(this, &ASpawnPoint::MakeSpawnGrid);
+	}
 }
 
 
