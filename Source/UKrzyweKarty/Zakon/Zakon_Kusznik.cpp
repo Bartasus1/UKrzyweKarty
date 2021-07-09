@@ -18,14 +18,14 @@ AZakon_Kusznik::AZakon_Kusznik()
 	this->Name = "Kusznik";
 }
 
-void AZakon_Kusznik::ActiveAbility(UGameObject* GO)
+void AZakon_Kusznik::ActiveAbility(UGameObject* GameObject)
 {
 }
 
-void AZakon_Kusznik::ActiveAbility2(UGameObject * GO)
+void AZakon_Kusznik::ActiveAbility2(UGameObject * GameObject)
 {
 }
 
-void AZakon_Kusznik::PassiveAbility(UGameObject* GO)
+void AZakon_Kusznik::PassiveAbility(UGameObject* GameObject)
 {
 }

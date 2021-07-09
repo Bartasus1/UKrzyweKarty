@@ -16,8 +16,8 @@ class UKRZYWEKARTY_API AZakon_Paladyn : public AZakon
 public:
 	AZakon_Paladyn();
 
-	virtual void ActiveAbility(UGameObject* GO) override; //Boska Moc
-	virtual void ActiveAbility2(UGameObject* GO) override; //Z drogi!
-	virtual void PassiveAbility(UGameObject* GO) override; //Ochrona
-	virtual void PassiveAbility2(UGameObject* GO) override; //Œwieta Tarcza
+	virtual void ActiveAbility(UGameObject* GameObject) override; //Boska Moc
+	virtual void ActiveAbility2(UGameObject* GameObject) override; //Z drogi!
+	virtual void PassiveAbility(UGameObject* GameObject) override; //Ochrona
+	virtual void PassiveAbility2(UGameObject* GameObject) override; //Œwieta Tarcza
 };

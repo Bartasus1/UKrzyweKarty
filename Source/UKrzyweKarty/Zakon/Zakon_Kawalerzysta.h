@@ -16,7 +16,7 @@ class UKRZYWEKARTY_API AZakon_Kawalerzysta : public AZakon
 public:
 	AZakon_Kawalerzysta();
 
-	virtual void ActiveAbility(UGameObject* GO) override; //Taranowanie
-	virtual void ActiveAbility2(UGameObject* GO) override; //Wykop
-	virtual void PassiveAbility(UGameObject* GO) override; // Jazda Konna
+	virtual void ActiveAbility(UGameObject* GameObject) override; //Taranowanie
+	virtual void ActiveAbility2(UGameObject* GameObject) override; //Wykop
+	virtual void PassiveAbility(UGameObject* GameObject) override; // Jazda Konna
 };

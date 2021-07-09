@@ -17,7 +17,7 @@ AZakon_Rycerz::AZakon_Rycerz()
 	this->Name = "Rycerz";
 }
 
-void AZakon_Rycerz::ActiveAbility(UGameObject* GO)
+void AZakon_Rycerz::ActiveAbility(UGameObject* GameObject)
 {
 	if (Mana >= 2 && Health < MaxHealth)
 	{
@@ -30,19 +30,19 @@ void AZakon_Rycerz::ActiveAbility(UGameObject* GO)
 }
 
 
-void AZakon_Rycerz::PassiveAbility(UGameObject* GO)
+void AZakon_Rycerz::PassiveAbility(UGameObject* GameObject)
 {
-	if (GO->TargetCharacter == this)
+	if (GameObject->TargetCharacter == this)
 	{
 		if (CountAttacks == 2) // blocking
 		{
-			GO->CurrentCharacter->bIsAllowedToAttack = false;
+			GameObject->CurrentCharacter->bIsAllowedToAttack = false;
 			CountAttacks = 0;
 
 		}
 		else //setting back to normal		
 		{
-			GO->CurrentCharacter->bIsAllowedToAttack = true;
+			GameObject->CurrentCharacter->bIsAllowedToAttack = true;
 		}
 	}
 }

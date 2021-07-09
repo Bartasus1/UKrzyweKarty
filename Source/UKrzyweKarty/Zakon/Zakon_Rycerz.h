@@ -17,6 +17,6 @@ class UKRZYWEKARTY_API AZakon_Rycerz : public AZakon
 public:
 	AZakon_Rycerz();
 
-	virtual void ActiveAbility(UGameObject* GO) override; //Regeneracja
-	virtual void PassiveAbility(UGameObject* GO) override; //Fechtunek
+	virtual void ActiveAbility(UGameObject* GameObject) override; //Regeneracja
+	virtual void PassiveAbility(UGameObject* GameObject) override; //Fechtunek
 };

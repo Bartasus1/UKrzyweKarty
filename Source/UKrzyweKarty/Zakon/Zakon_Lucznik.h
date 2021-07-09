@@ -18,10 +18,10 @@ class UKRZYWEKARTY_API AZakon_Lucznik : public AZakon
 public:
 	AZakon_Lucznik();
 
-	virtual bool Attack(UGameObject *GO, bool bIsInLine) override;
+	virtual bool Attack(UGameObject *GameObject, bool bIsInLine) override;
 
-	virtual void ActiveAbility(UGameObject* GO) override; //Tr�jstrza�
-	virtual void PassiveAbility(UGameObject* GO) override; //Strza�y Rozrywaj�ce
+	virtual void ActiveAbility(UGameObject* GameObject) override; //Tr�jstrza�
+	virtual void PassiveAbility(UGameObject* GameObject) override; //Strza�y Rozrywaj�ce
 
 protected:
 	//UPROPERTY(EditAnywhere)

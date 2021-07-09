@@ -23,19 +23,19 @@ AZakon_Lucznik::AZakon_Lucznik()
 
 
 
-bool AZakon_Lucznik::Attack(UGameObject *GO, bool bIsInLine)
+bool AZakon_Lucznik::Attack(UGameObject *GameObject, bool bIsInLine)
 {
-	//Go.TargetCharacter = FirstTarget(Go.TargetCharacter, Go.Position);
-	return AKKCharacter::Attack(GO);
+	//GameObject.TargetCharacter = FirstTarget(GameObject.TargetCharacter, GameObject.Position);
+	return AKKCharacter::Attack(GameObject);
 
-	//float alpha = AKKCharacter::LookRotationBasedOnLocation(this, Go.TargetCharacter);
+	//float alpha = AKKCharacter::LookRotationBasedOnLocation(this, GameObject.TargetCharacter);
 	//FRotator rotation = FRotator(0, alpha , 0);
 
 	//GetWorld()->SpawnActor<AArrow>(Arrow, GetActorLocation() + FVector(0,0, 50), rotation);
 }
 
 
-void AZakon_Lucznik::ActiveAbility(UGameObject* GO)
+void AZakon_Lucznik::ActiveAbility(UGameObject* GameObject)
 {
 
 	if (bIsAllowedToUseAbility)
@@ -47,11 +47,11 @@ void AZakon_Lucznik::ActiveAbility(UGameObject* GO)
 	}
 }
 
-void AZakon_Lucznik::PassiveAbility(UGameObject* GO)
+void AZakon_Lucznik::PassiveAbility(UGameObject* GameObject)
 {
 	if (bIsAllowedToUseAbility)
 	{
-		if (GO->TargetCharacter != nullptr)
+		if (GameObject->TargetCharacter != nullptr)
 		{
 			if (bAttacked)
 			{
@@ -61,9 +61,9 @@ void AZakon_Lucznik::PassiveAbility(UGameObject* GO)
 
 			if (CountAttacks == 2)
 			{
-				if (GO->TargetCharacter->Defense > 1)
+				if (GameObject->TargetCharacter->Defense > 1)
 				{
-					GO->TargetCharacter->Defense -= 1;
+					GameObject->TargetCharacter->Defense -= 1;
 				}
 
 				CountAttacks = 0;

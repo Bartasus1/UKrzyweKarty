@@ -17,11 +17,11 @@ AZakon_Halabardzista::AZakon_Halabardzista()
 	this->Name = "Pikinier";
 }
 
-void AZakon_Halabardzista::ActiveAbility(UGameObject* GO)
+void AZakon_Halabardzista::ActiveAbility(UGameObject* GameObject)
 {
 	if (bIsAllowedToUseAbility)
 	{
-		if (GO->TargetCharacter != nullptr)
+		if (GameObject->TargetCharacter != nullptr)
 		{
 			if (Mana >= 2)
 			{
@@ -35,7 +35,7 @@ void AZakon_Halabardzista::ActiveAbility(UGameObject* GO)
 	}
 }
 
-void AZakon_Halabardzista::PassiveAbility(UGameObject* GO)
+void AZakon_Halabardzista::PassiveAbility(UGameObject* GameObject)
 {
 
 }

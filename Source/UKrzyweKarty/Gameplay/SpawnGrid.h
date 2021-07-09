@@ -8,6 +8,8 @@
 #include "Net/UnrealNetwork.h"
 #include "SpawnGrid.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCardsSpawned);
+
 UCLASS(ABSTRACT)
 class UKRZYWEKARTY_API ASpawnGrid : public AActor
 {
@@ -18,17 +20,33 @@ public:
 	ASpawnGrid();
 
 protected:
-	UPROPERTY(EditAnywhere)
+
+	
+
+	
+	UPROPERTY(VisibleAnywhere)
 	int32 CardNumber;
 
+	UPROPERTY(VisibleAnywhere)
+	int32 ID;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cards")
 	TArray <TSubclassOf<AKKCharacter>> SpawnCards;
 
 public:
+	UPROPERTY(BlueprintAssignable)
+	FCardsSpawned CardsSpawned;
+
+	
 	UPROPERTY(Replicated, BlueprintReadWrite, Category = "Cards")
 	TArray <AKKCharacter*> SpawnActors;
 
 	void MakeCardsSpawn(int32 OwnerID);
+
+	UFUNCTION()
+		void SpawnBase();
+
+
 
 	//virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent);
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;

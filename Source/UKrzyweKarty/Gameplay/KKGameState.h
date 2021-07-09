@@ -10,7 +10,7 @@
 class AKKPlayer;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FWinnerFound);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCreateMap);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCreatedMap);
 
 
 /**
@@ -44,7 +44,7 @@ public:
 		FWinnerFound WinnerFound;
 
 	UPROPERTY(BlueprintAssignable)
-		FCreateMap CreateMap;
+		FCreatedMap CreatedMap;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 

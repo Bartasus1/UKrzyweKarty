@@ -16,8 +16,8 @@ class UKRZYWEKARTY_API AZakon_Kaplan : public AZakon
 public:
 	AZakon_Kaplan();
 
-	virtual void ActiveAbility(UGameObject* GO) override; //Modlitwa
-	virtual void ActiveAbility2(UGameObject* GO) override; //Wola Boga
-	virtual void PassiveAbility(UGameObject* GO) override; //Moc Duchowa
+	virtual void ActiveAbility(UGameObject* GameObject) override; //Modlitwa
+	virtual void ActiveAbility2(UGameObject* GameObject) override; //Wola Boga
+	virtual void PassiveAbility(UGameObject* GameObject) override; //Moc Duchowa
 
 };

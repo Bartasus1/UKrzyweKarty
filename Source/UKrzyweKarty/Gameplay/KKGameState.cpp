@@ -39,7 +39,7 @@ void AKKGameState::BeginPlay()
 	if (HasAuthority())
 	{
 		TileMap = GetWorld()->SpawnActor<ATileMap>(TileMapClass, FVector::ZeroVector, FRotator::ZeroRotator);
-		CreateMap.Broadcast();
+		CreatedMap.Broadcast();
 	}
 }
 

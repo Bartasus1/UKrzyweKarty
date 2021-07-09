@@ -16,7 +16,7 @@ class UKRZYWEKARTY_API AZakon_Kusznik : public AZakon
 public:
 	AZakon_Kusznik();
 
-	virtual void ActiveAbility(UGameObject* GO) override; //Przycelowanie
-	virtual void ActiveAbility2(UGameObject* GO) override; //Wyczerpanie
-	virtual void PassiveAbility(UGameObject* GO) override; //Wrzaca Krew
+	virtual void ActiveAbility(UGameObject* GameObject) override; //Przycelowanie
+	virtual void ActiveAbility2(UGameObject* GameObject) override; //Wyczerpanie
+	virtual void PassiveAbility(UGameObject* GameObject) override; //Wrzaca Krew
 };

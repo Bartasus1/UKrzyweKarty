@@ -22,8 +22,8 @@ AKKCharacter::AKKCharacter()
 	TextName->SetupAttachment(Mesh);
 
 	bReplicates = true;
-	SetReplicateMovement(true);
-
+    SetReplicateMovement(true);
+	SetActorScale3D(FVector(0.5));
 }
 
 //float AKKCharacter::LookRotationBasedOnLocation(AKKCharacter* One, AKKCharacter* Two)
@@ -74,7 +74,7 @@ int32 AKKCharacter::Distance(AKKCharacter * Target)
 	return Distance;
 }
 
-void AKKCharacter::KillCharacter(UGameObject * GO)
+void AKKCharacter::KillCharacter(UGameObject * GameObject)
 {
 	Health = 0;
 	bIsDead = true;
@@ -84,19 +84,19 @@ void AKKCharacter::KillCharacter(UGameObject * GO)
 		if (HasAuthority())
 		{
 			AKKGameMode* GM = Cast<AKKGameMode>(GetWorld()->GetAuthGameMode());
-			GM->OnWin(Cast<AKKPlayer>(GO->GetOwner()));
+			GM->OnWin(Cast<AKKPlayer>(GameObject->GetOwner()));
 		}
 	}
 	else
 	{
-		GO->TileMap->Tiles[OwnedTile->GetTileID()]->SetOwningCharacter(nullptr);
-		GO->TargetCharacter = nullptr;
+		GameObject->TileMap->Tiles[OwnedTile->GetTileID()]->SetOwningCharacter(nullptr);
+		GameObject->TargetCharacter = nullptr;
 	}
 
 	Destroy();
 }
 
-void AKKCharacter::CalculateDamage(UGameObject *GO)
+void AKKCharacter::CalculateDamage(UGameObject *GameObject)
 {
 	if (bIsAllowedToAttack)// we need to make sure, that its not parried
 	{
@@ -104,28 +104,28 @@ void AKKCharacter::CalculateDamage(UGameObject *GO)
 		bAttacked = true; // e.g Lucznik -> StrzalyRozrywajace
 
 		//victim
-		GO->TargetCharacter->CountAttacks++; // e.g Rycerz->Fechtunek
+		GameObject->TargetCharacter->CountAttacks++; // e.g Rycerz->Fechtunek
 
 		////////////   Calculating damage   /////////////
 
-		if (GO->TargetCharacter->Defense > 0)
+		if (GameObject->TargetCharacter->Defense > 0)
 		{
-			GO->TargetCharacter->Defense--;
+			GameObject->TargetCharacter->Defense--;
 
-			if (Strength > GO->TargetCharacter->Defense)
+			if (Strength > GameObject->TargetCharacter->Defense)
 			{
-				GO->TargetCharacter->Health -= (Strength - GO->TargetCharacter->Defense);
+				GameObject->TargetCharacter->Health -= (Strength - GameObject->TargetCharacter->Defense);
 			}
 		}
 		else
 		{
-			GO->TargetCharacter->Defense = 0;
-			GO->TargetCharacter->Health -= Strength;
+			GameObject->TargetCharacter->Defense = 0;
+			GameObject->TargetCharacter->Health -= Strength;
 		}
 
-		if (GO->TargetCharacter->Health <= 0)
+		if (GameObject->TargetCharacter->Health <= 0)
 		{
-			GO->TargetCharacter->KillCharacter(GO);
+			GameObject->TargetCharacter->KillCharacter(GameObject);
 		}
 	}
 	else
@@ -134,30 +134,30 @@ void AKKCharacter::CalculateDamage(UGameObject *GO)
 	}
 }
 
-bool AKKCharacter::Attack(UGameObject *GO, bool bIsInLine)
+bool AKKCharacter::Attack(UGameObject *GameObject, bool bIsInLine)
 {
-	if (GO->TargetCharacter != nullptr && GO->TargetCharacter != this)
+	if (GameObject->TargetCharacter != nullptr && GameObject->TargetCharacter != this)
 	{
-		if ( GO->TargetCharacter->Health > 0 && Distance(GO->TargetCharacter) <= AttackDistance)
+		if ( GameObject->TargetCharacter->Health > 0 && Distance(GameObject->TargetCharacter) <= AttackDistance)
 		{
-			if (Distance(GO->TargetCharacter) == 0)
+			if (Distance(GameObject->TargetCharacter) == 0)
 			{
 				bIsInLine = false;
 			}
 
 			if (bIsInLine)
 			{
-				int32 TileID = GO->CurrentCharacter->OwnedTile->GetTileID();
-				int32 TargetTileID = GO->TargetCharacter->OwnedTile->GetTileID();
+				int32 TileID = GameObject->CurrentCharacter->OwnedTile->GetTileID();
+				int32 TargetTileID = GameObject->TargetCharacter->OwnedTile->GetTileID();
 				
 				if (TileID % 4 == TargetTileID % 4 || TileID / 4 == TargetTileID / 4) // X || Y
 				{
-					CalculateDamage(GO);
+					CalculateDamage(GameObject);
 				}
 			}
 			else // Cards don't have to be in line
 			{
-				CalculateDamage(GO);
+				CalculateDamage(GameObject);
 			}
 
 			Strength = MaxStrength;
@@ -180,20 +180,20 @@ void AKKCharacter::SetCharacterName_Implementation()
 }
 
 
-void AKKCharacter::ActiveAbility(UGameObject* GO)
+void AKKCharacter::ActiveAbility(UGameObject* GameObject)
 {
 }
 
-void AKKCharacter::ActiveAbility2(UGameObject* GO)
+void AKKCharacter::ActiveAbility2(UGameObject* GameObject)
 {
 }
 
 
-void AKKCharacter::PassiveAbility(UGameObject* GO)
+void AKKCharacter::PassiveAbility(UGameObject* GameObject)
 {
 }
 
-void AKKCharacter::PassiveAbility2(UGameObject* GO)
+void AKKCharacter::PassiveAbility2(UGameObject* GameObject)
 {
 }
 

@@ -17,6 +17,6 @@ class UKRZYWEKARTY_API AZakon_Halabardzista : public AZakon
 public:
 	AZakon_Halabardzista();
 
-	virtual void ActiveAbility(UGameObject* GO) override; //Przedluzenie
-	virtual void PassiveAbility(UGameObject* GO); //Pika
+	virtual void ActiveAbility(UGameObject* GameObject) override; //Przedluzenie
+	virtual void PassiveAbility(UGameObject* GameObject); //Pika
 };

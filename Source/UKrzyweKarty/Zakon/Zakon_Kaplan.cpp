@@ -19,11 +19,11 @@ AZakon_Kaplan::AZakon_Kaplan()
 
 	
 
-void AZakon_Kaplan::ActiveAbility(UGameObject* GO)
+void AZakon_Kaplan::ActiveAbility(UGameObject* GameObject)
 {
 	if (bIsAllowedToUseAbility)
 	{
-		AZakon* Ally = Cast<AZakon>(GO->TargetCharacter);
+		AZakon* Ally = Cast<AZakon>(GameObject->TargetCharacter);
 
 		if (Ally)
 		{
@@ -45,17 +45,17 @@ void AZakon_Kaplan::ActiveAbility(UGameObject* GO)
 	}
 }
 
-void AZakon_Kaplan::ActiveAbility2(UGameObject* GO)
+void AZakon_Kaplan::ActiveAbility2(UGameObject* GameObject)
 {
 	if (bIsAllowedToUseAbility)
 	{
-		if (GO->TargetCharacter != nullptr)
+		if (GameObject->TargetCharacter != nullptr)
 		{
 			if (Mana >= 5)
 			{
 				this->Strength = 17;
 				this->AttackDistance = 5;
-				Attack(GO, false);
+				Attack(GameObject, false);
 				this->AttackDistance = 1;
 
 				Mana -= 5;
@@ -64,7 +64,7 @@ void AZakon_Kaplan::ActiveAbility2(UGameObject* GO)
 	}
 }
 
-void AZakon_Kaplan::PassiveAbility(UGameObject* GO)
+void AZakon_Kaplan::PassiveAbility(UGameObject* GameObject)
 {
 	if (bAttacked)
 	{

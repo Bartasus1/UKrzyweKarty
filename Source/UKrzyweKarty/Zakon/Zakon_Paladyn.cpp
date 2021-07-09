@@ -17,14 +17,14 @@ AZakon_Paladyn::AZakon_Paladyn()
 	this->Name = "Paladyn";
 }
 
-void AZakon_Paladyn::ActiveAbility(UGameObject* GO)
+void AZakon_Paladyn::ActiveAbility(UGameObject* GameObject)
 {
 	
-	auto StrengthOrHeal =  [this, GO] () 
+	auto StrengthOrHeal =  [this, GameObject] () 
 	{
-		if (GO->TargetCharacter != nullptr)
+		if (GameObject->TargetCharacter != nullptr)
 		{
-			AZakon* Ally = Cast<AZakon>(GO->TargetCharacter);
+			AZakon* Ally = Cast<AZakon>(GameObject->TargetCharacter);
 
 			if (Ally)
 			{
@@ -36,7 +36,7 @@ void AZakon_Paladyn::ActiveAbility(UGameObject* GO)
 			else
 			{
 				this->Strength = 10;
-				Attack(GO, false);
+				Attack(GameObject, false);
 			}
 		}
 	};
@@ -44,24 +44,24 @@ void AZakon_Paladyn::ActiveAbility(UGameObject* GO)
 
 }
 
-void AZakon_Paladyn::ActiveAbility2(UGameObject * GO)
+void AZakon_Paladyn::ActiveAbility2(UGameObject * GameObject)
 {
 }
 
-void AZakon_Paladyn::PassiveAbility(UGameObject* GO)
+void AZakon_Paladyn::PassiveAbility(UGameObject* GameObject)
 {
 
 	if (Health < 15)
 	{
-		GO->TargetCharacter->bIsAllowedToUseAbility = false;
+		GameObject->TargetCharacter->bIsAllowedToUseAbility = false;
 	}
 	else
 	{
-		GO->TargetCharacter->bIsAllowedToUseAbility = true;
+		GameObject->TargetCharacter->bIsAllowedToUseAbility = true;
 	}
 
 }
 
-void AZakon_Paladyn::PassiveAbility2(UGameObject * GO)
+void AZakon_Paladyn::PassiveAbility2(UGameObject * GameObject)
 {
 }

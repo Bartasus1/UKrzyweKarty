@@ -9,11 +9,9 @@
 #include "GameObject.h"
 #include "TileMap.h"
 #include "Tile.h"
-#include "KKPlayerState.h"
 #include "KKGameState.h"
 #include "KKGameMode.h"
 #include "SpawnPoint.h"
-#include "Engine/Engine.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
 
@@ -34,8 +32,8 @@ AKKPlayer::AKKPlayer()
 	PlayerCamera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	PlayerCamera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 
-	GO = CreateDefaultSubobject<UGameObject>("GameObjects");
-	GO->SetIsReplicated(true);
+	GameObject = CreateDefaultSubobject<UGameObject>("GameObjects");
+	GameObject->SetIsReplicated(true);
 }
 
 
@@ -51,8 +49,6 @@ void AKKPlayer::BeginPlay()
 		DisableInput(Cast<AKKPlayerController>(GetController()));
 		ChangeInput();
 	}
-	FTimerHandle TimerHandle;
-	GetWorldTimerManager().SetTimer(TimerHandle, this, &AKKPlayer::FindPlayerCards, 1, false);
 }
 
 
@@ -75,7 +71,7 @@ void AKKPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAction("SelectCurrentCharacter", IE_Pressed, this, &AKKPlayer::SelectCurrent);
 	PlayerInputComponent->BindAction("SelectTargetCharacter", IE_Pressed, this, &AKKPlayer::SelectTarget);
-	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &AKKPlayer::DoAttack);
+	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &AKKPlayer::MakeAttack);
 	PlayerInputComponent->BindAction("ActiveAbility", IE_Pressed, this, &AKKPlayer::ActiveAbility);
 
 	PlayerInputComponent->BindAction("MoveForward", IE_Pressed, this, &AKKPlayer::MoveForward);
@@ -101,11 +97,11 @@ void AKKPlayer::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetim
 
 void AKKPlayer::SelectCurrent()
 {
-	GO->CurrentCharacter = CastRayForCharacter(); //Client side selecting Character
+	GameObject->CurrentCharacter = CastRayForCharacter(); //Client side selecting Character
 
-	if (GO->CurrentCharacter && GO->CurrentCharacter->GetOwner() == this)
+	if (GameObject->CurrentCharacter && GameObject->CurrentCharacter->GetOwner() == this)
 	{
-		ServerSetCurrentCharacter(GO->CurrentCharacter); //Server side selecting Character
+		ServerSetCurrentCharacter(GameObject->CurrentCharacter); //Server side selecting Character
 
 		if (CurrentCharacterWidget)
 		{
@@ -114,21 +110,21 @@ void AKKPlayer::SelectCurrent()
 		CurrentCharacterWidget = CreateWidget(GetWorld(), CurrentCharacterWidgetClass);
 		CurrentCharacterWidget->AddToViewport();
 
-		//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, GO->CurrentCharacter->Name);
+		//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, GameObject->CurrentCharacter->Name);
 	}
 	else
 	{
-		GO->CurrentCharacter = nullptr;
+		GameObject->CurrentCharacter = nullptr;
 	}
 }
 
 void AKKPlayer::SelectTarget()
 {
-	GO->TargetCharacter = CastRayForCharacter();
+	GameObject->TargetCharacter = CastRayForCharacter();
 
-	if (GO->TargetCharacter && GO->TargetCharacter->GetOwner() != this)
+	if (GameObject->TargetCharacter && GameObject->TargetCharacter->GetOwner() != this)
 	{
-		ServerSetTargetCharacter(GO->TargetCharacter);
+		ServerSetTargetCharacter(GameObject->TargetCharacter);
 		if (TargetCharacterWidget)
 		{
 			TargetCharacterWidget->RemoveFromParent();
@@ -138,17 +134,17 @@ void AKKPlayer::SelectTarget()
 	}
 	else
 	{
-		GO->TargetCharacter = nullptr;
+		GameObject->TargetCharacter = nullptr;
 	}
 }
 
-void AKKPlayer::DoAttack()
+void AKKPlayer::MakeAttack()
 {
-	if (GO->CurrentCharacter != nullptr && GO->TargetCharacter != nullptr)
+	if (GameObject->CurrentCharacter != nullptr && GameObject->TargetCharacter != nullptr)
 	{
 		MakeCharacterAttack();
-		//float alpha = AKKCharacter::LookRotationBasedOnLocation(GO->CurrentCharacter, GO->TargetCharacter);
-		//GO->CurrentCharacter->Mesh->SetRelativeRotation(FRotator(-alpha, 0, 90));
+		//float alpha = AKKCharacter::LookRotationBasedOnLocation(GameObject->CurrentCharacter, GameObject->TargetCharacter);
+		//GameObject->CurrentCharacter->Mesh->SetRelativeRotation(FRotator(-alpha, 0, 90));
 	}
 }
 
@@ -223,9 +219,9 @@ void AKKPlayer::AddOnPosition3()
 
 void AKKPlayer::MakeCharacterAttack_Implementation()
 {
-	if (GO->CurrentCharacter != nullptr && GO->TargetCharacter != nullptr)
+	if (GameObject->CurrentCharacter != nullptr && GameObject->TargetCharacter != nullptr)
 	{
-		if (GO->CurrentCharacter->Attack(GO))
+		if (GameObject->CurrentCharacter->Attack(GameObject))
 		{
 			PlayAttackAnimation();
 			MakeMove();
@@ -237,20 +233,20 @@ void AKKPlayer::AddOnPosition_Implementation(int32 Position)
 {
 	if (HasAuthority())
 	{
-		AKKCharacter* Character = GO->CurrentCharacter;
-		int32 StartLine = (PlayerID % 2 == 0) ? 0 : 19;
+		AKKCharacter* Character = GameObject->CurrentCharacter;
+		const int32 StartLine = (PlayerID % 2 == 0) ? 0 : 19;
 
 		if (Character != nullptr && !(Character->bIsPlacedOnTheMap))
 		{
 			Position = (StartLine == 0) ? Position : -Position;
-			ATile* Tile = GO->TileMap->Tiles[(StartLine + Position)];
+			ATile* Tile = GameObject->TileMap->Tiles[(StartLine + Position)];
 
 			if (Tile->GetOwningCharacter() == nullptr)
 			{
 				MoveToTile(Tile);
 				Character->bIsPlacedOnTheMap = true;
 				PlaySpawnAnimation();
-				//GO->CurrentCharacter = nullptr;
+				//GameObject->CurrentCharacter = nullptr;
 				MakeMove();
 			}
 		}
@@ -261,14 +257,14 @@ void AKKPlayer::MoveCharacterForward_Implementation()
 {
 	if (HasAuthority())
 	{
-		if (GO->CurrentCharacter && GO->CurrentCharacter->CanCharacterMove())
+		if (GameObject->CurrentCharacter && GameObject->CurrentCharacter->CanCharacterMove())
 		{
-			ATile* Tile = GO->CurrentCharacter->OwnedTile;
-			int32 TileId = Tile->GetTileID();
+			ATile* Tile = GameObject->CurrentCharacter->OwnedTile;
+			const int32 TileId = Tile->GetTileID();
 
 			if (TileId < 16)
 			{
-				ATile* NewTile = GO->TileMap->Tiles[TileId + 4];
+				ATile* NewTile = GameObject->TileMap->Tiles[TileId + 4];
 				if (NewTile->GetOwningCharacter() == nullptr)
 				{
 					Tile->SetOwningCharacter(nullptr); // CurrentCharacter no longer occupies this tile
@@ -284,14 +280,14 @@ void AKKPlayer::MoveCharacterBackward_Implementation()
 {
 	if (HasAuthority())
 	{
-		if (GO->CurrentCharacter && GO->CurrentCharacter->CanCharacterMove())
+		if (GameObject->CurrentCharacter && GameObject->CurrentCharacter->CanCharacterMove())
 		{
-			ATile* Tile = GO->CurrentCharacter->OwnedTile;
-			int32 TileId = Tile->GetTileID();
+			ATile* Tile = GameObject->CurrentCharacter->OwnedTile;
+			const int32 TileId = Tile->GetTileID();
 
 			if (TileId > 3)
 			{
-				ATile* NewTile = GO->TileMap->Tiles[TileId - 4];
+				ATile* NewTile = GameObject->TileMap->Tiles[TileId - 4];
 				if (NewTile->GetOwningCharacter() == nullptr)
 				{
 					Tile->SetOwningCharacter(nullptr); // CurrentCharacter no longer occupies this tile
@@ -307,14 +303,14 @@ void AKKPlayer::MoveCharacterLeft_Implementation()
 {
 	if (HasAuthority())
 	{
-		if (GO->CurrentCharacter && GO->CurrentCharacter->CanCharacterMove())
+		if (GameObject->CurrentCharacter && GameObject->CurrentCharacter->CanCharacterMove())
 		{
-			ATile* Tile = GO->CurrentCharacter->OwnedTile;
-			int32 TileId = Tile->GetTileID();
+			ATile* Tile = GameObject->CurrentCharacter->OwnedTile;
+			const int32 TileId = Tile->GetTileID();
 
 			if (TileId % 4 != 3)
 			{
-				ATile* NewTile = GO->TileMap->Tiles[TileId + 1];
+				ATile* NewTile = GameObject->TileMap->Tiles[TileId + 1];
 				if (NewTile->GetOwningCharacter() == nullptr)
 				{
 					Tile->SetOwningCharacter(nullptr); // CurrentCharacter no longer occupies this tile
@@ -330,14 +326,14 @@ void AKKPlayer::MoveCharacterRight_Implementation()
 {
 	if (HasAuthority())
 	{
-		if (GO->CurrentCharacter && GO->CurrentCharacter->CanCharacterMove())
+		if (GameObject->CurrentCharacter && GameObject->CurrentCharacter->CanCharacterMove())
 		{
-			ATile* Tile = GO->CurrentCharacter->OwnedTile;
-			int32 TileId = Tile->GetTileID();
+			ATile* Tile = GameObject->CurrentCharacter->OwnedTile;
+			const int32 TileId = Tile->GetTileID();
 
 			if (TileId % 4 != 0)
 			{
-				ATile* NewTile = GO->TileMap->Tiles[TileId - 1];
+				ATile* NewTile = GameObject->TileMap->Tiles[TileId - 1];
 				if (NewTile->GetOwningCharacter() == nullptr)
 				{
 					Tile->SetOwningCharacter(nullptr); // CurrentCharacter no longer occupies this tile
@@ -365,8 +361,8 @@ void AKKPlayer::ChangeInput_Implementation()
 {
 	if (HasAuthority())
 	{
-		AKKGameMode* GM = Cast<AKKGameMode>(GetWorld()->GetAuthGameMode());
-		GM->ChangeInput();
+		AKKGameMode* GameMode = Cast<AKKGameMode>(GetWorld()->GetAuthGameMode());
+		GameMode->ChangeInput();
 	}
 	//GEngine->AddOnScreenDebugMessage(-1, 4, FColor::Red, FString::FromInt(bIsMyTurn));	
 }
@@ -406,16 +402,16 @@ void AKKPlayer::ZoomOut()
 
 void AKKPlayer::MoveToTile(class ATile* InTile)
 {	
-	GO->CurrentCharacter->SetActorLocation(InTile->GetActorLocation());
-	InTile->SetOwningCharacter(GO->CurrentCharacter);
-	GO->CurrentCharacter->OwnedTile = InTile;
+	GameObject->CurrentCharacter->SetActorLocation(InTile->GetActorLocation());
+	InTile->SetOwningCharacter(GameObject->CurrentCharacter);
+	GameObject->CurrentCharacter->OwnedTile = InTile;
 }
 
 void AKKPlayer::ActiveAbility()
 {
-	if (GO->CurrentCharacter != nullptr && GO->TargetCharacter != nullptr)
+	if (GameObject->CurrentCharacter != nullptr && GameObject->TargetCharacter != nullptr)
 	{
-		//GO->CurrentCharacter->ActiveAbility(GO->CurrentCharacter, GO->TargetCharacter, GO->Position);
+		//GameObject->CurrentCharacter->ActiveAbility(GameObject->CurrentCharacter, GameObject->TargetCharacter, GameObject->Position);
 	}
 }
 
@@ -453,9 +449,9 @@ AKKCharacter * AKKPlayer::CastRayForCharacter()
 {
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
-		FVector Start, Dir, End;
+		FVector Start, Dir;
 		PC->DeprojectMousePositionToWorld(Start, Dir);
-		End = Start + (Dir * 8000.0f);
+		const FVector End = Start + (Dir * 8000.0f);
 
 		FHitResult HitResult;
 
@@ -473,33 +469,33 @@ AKKCharacter * AKKPlayer::CastRayForCharacter()
 
 void AKKPlayer::PlayAttackAnimation_Implementation()
 {
-	if (GO->CurrentCharacter->AttackAnimation != nullptr)
+	if (GameObject->CurrentCharacter->AttackAnimation != nullptr)
 	{
-		UAnimInstance* AnimInstance = GO->CurrentCharacter->Mesh->GetAnimInstance();
+		UAnimInstance* AnimInstance = GameObject->CurrentCharacter->Mesh->GetAnimInstance();
 		if (AnimInstance != nullptr)
-			AnimInstance->Montage_Play(GO->CurrentCharacter->AttackAnimation);
+			AnimInstance->Montage_Play(GameObject->CurrentCharacter->AttackAnimation);
 	}
 }
 
 void AKKPlayer::PlaySpawnAnimation_Implementation()
 {
-	if (GO->CurrentCharacter->SummonAnimation)
+	if (GameObject->CurrentCharacter->SummonAnimation)
 	{
-		UAnimInstance* AnimInstance = GO->CurrentCharacter->Mesh->GetAnimInstance();
+		UAnimInstance* AnimInstance = GameObject->CurrentCharacter->Mesh->GetAnimInstance();
 
 		if (AnimInstance)
-			AnimInstance->Montage_Play(GO->CurrentCharacter->SummonAnimation);
+			AnimInstance->Montage_Play(GameObject->CurrentCharacter->SummonAnimation);
 	}
 }
 
 void AKKPlayer::ServerSetTargetCharacter_Implementation(AKKCharacter * Character)
 {
-	GO->TargetCharacter = Character;
+	GameObject->TargetCharacter = Character;
 }
 
 void AKKPlayer::ServerSetCurrentCharacter_Implementation(AKKCharacter * Character)
 {
-	GO->CurrentCharacter = Character;
+	GameObject->CurrentCharacter = Character;
 }
 
 void AKKPlayer::GetIDFromController()
@@ -515,7 +511,7 @@ void AKKPlayer::GetMapFromGameState()
 {
 	if (AKKGameState* GS = Cast<AKKGameState>(GetWorld()->GetGameState()))
 	{
-		GO->TileMap = GS->TileMap;
-		//GEngine->AddOnScreenDebugMessage(-1, 4.f, FColor::Yellow, "Got map");
+		GameObject->TileMap = GS->TileMap;
+		//GEngine->AddOnScreenDebugMessage(-1, 4.f, FColor::Yellow, "GameObjectt map");
 	}
 }

@@ -19,22 +19,22 @@ AZakon_Kawalerzysta::AZakon_Kawalerzysta()
 }
 
 
-void AZakon_Kawalerzysta::ActiveAbility(UGameObject* GO)
+void AZakon_Kawalerzysta::ActiveAbility(UGameObject* GameObject)
 {
 	if (bIsAllowedToUseAbility)
 	{
-		if (GO->TargetCharacter != nullptr && GO->TargetCharacter->bIsPlacedOnTheMap)
+		if (GameObject->TargetCharacter != nullptr && GameObject->TargetCharacter->bIsPlacedOnTheMap)
 		{
 			if (Mana >= 2)
 			{
 				//First we need to get the direction - CurrentCharacter is in the center
-				int32 Direction = GO->CurrentCharacter->OwnedTile->GetTileID() - GO->TargetCharacter->OwnedTile->GetTileID();
+				int32 Direction = GameObject->CurrentCharacter->OwnedTile->GetTileID() - GameObject->TargetCharacter->OwnedTile->GetTileID();
 				// Forward - Direction == 4
 				// Backward - Direction == -4
 				// Left - Direction == 1
 				// Right - Direction == -1
 
-				int32 TileID = GO->CurrentCharacter->OwnedTile->GetTileID();
+				int32 TileID = GameObject->CurrentCharacter->OwnedTile->GetTileID();
 				bool bIsOnTheLeftBorder = (TileID % 4 == 0);
 				bool bIsOnTheRightBorder = (TileID % 4 == 3);
 				bool bIsOnTheTopBorder = (TileID > 15);
@@ -73,14 +73,14 @@ void AZakon_Kawalerzysta::ActiveAbility(UGameObject* GO)
 
 				int32 Destination = TileID + (Direction * 2);
 			
-				if (Direction != 0 && Destination >= 0 && Destination < 20 && GO->TileMap->Tiles[Destination] == nullptr)
+				if (Direction != 0 && Destination >= 0 && Destination < 20 && GameObject->TileMap->Tiles[Destination] == nullptr)
 				{
 					this->Strength = 13;
 					this->AttackDistance = 2;
-					Attack(GO);
-					GO->TileMap->Tiles[TileID]->SetOwningCharacter(nullptr);
-					GO->CurrentCharacter->OwnedTile = GO->TileMap->Tiles[Destination];
-					GO->TileMap->Tiles[Destination]->SetOwningCharacter(GO->CurrentCharacter);
+					Attack(GameObject);
+					GameObject->TileMap->Tiles[TileID]->SetOwningCharacter(nullptr);
+					GameObject->CurrentCharacter->OwnedTile = GameObject->TileMap->Tiles[Destination];
+					GameObject->TileMap->Tiles[Destination]->SetOwningCharacter(GameObject->CurrentCharacter);
 
 					Mana -= 2;
 				}
@@ -91,18 +91,18 @@ void AZakon_Kawalerzysta::ActiveAbility(UGameObject* GO)
 
 
 
-void AZakon_Kawalerzysta::ActiveAbility2(UGameObject* GO)
+void AZakon_Kawalerzysta::ActiveAbility2(UGameObject* GameObject)
 {
 	if (bIsAllowedToUseAbility)
 	{
-		int32 TileID = GO->CurrentCharacter->OwnedTile->GetTileID();
+		int32 TileID = GameObject->CurrentCharacter->OwnedTile->GetTileID();
 		if (TileID > 3)
 		{
 			if (Mana >= 3)
 			{
-				GO->TargetCharacter = GO->TileMap->Tiles[TileID - 4]->GetOwningCharacter();
+				GameObject->TargetCharacter = GameObject->TileMap->Tiles[TileID - 4]->GetOwningCharacter();
 				this->Strength = 21;
-				Attack(GO);
+				Attack(GameObject);
 
 				Mana -= 3;
 			}
@@ -110,6 +110,6 @@ void AZakon_Kawalerzysta::ActiveAbility2(UGameObject* GO)
 	}
 }
 
-void AZakon_Kawalerzysta::PassiveAbility(UGameObject* GO)
+void AZakon_Kawalerzysta::PassiveAbility(UGameObject* GameObject)
 {
 }

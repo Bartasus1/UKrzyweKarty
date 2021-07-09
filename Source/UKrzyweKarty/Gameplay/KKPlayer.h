@@ -20,7 +20,7 @@ public:
 
 	void SelectCurrent();
 	void SelectTarget();
-	void DoAttack();
+	void MakeAttack();
 	void MoveForward();
 	void MoveBackward();
 	void MoveRight();
@@ -35,9 +35,11 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void GetMapFromGameState();
+	UFUNCTION(BlueprintCallable)
+		void FindPlayerCards();
 
 	UFUNCTION(Server, Reliable)
-		void AddOnPosition(int32 position);
+		void AddOnPosition(int32 Position);
 
 	UFUNCTION(Server, Reliable)
 		void ServerSetCurrentCharacter(AKKCharacter* Character);
@@ -74,7 +76,7 @@ public:
 	void MoveToTile(class ATile* InTile);
 
 	void ActiveAbility();
-	void FindPlayerCards();
+	
 
 	UFUNCTION(BlueprintCallable)
 	AKKCharacter* CastRayForCharacter(); // returns clicked KKCharacter
@@ -86,7 +88,7 @@ public:
 		class USpringArmComponent* SpringArm;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="GameObjects")
-		class UGameObject* GO;
+		class UGameObject* GameObject;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 		TSubclassOf<UUserWidget> ChangeTurnWidgetClass;

@@ -96,16 +96,16 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 	void SetCharacterName();
 
-	void KillCharacter(UGameObject* GO);
+	void KillCharacter(UGameObject* GameObject);
 
-	void CalculateDamage(UGameObject *GO);
+	void CalculateDamage(UGameObject *GameObject);
 
-	virtual bool Attack(UGameObject *GO, bool bIsInLine = true);
+	virtual bool Attack(UGameObject *GameObject, bool bIsInLine = true);
 
-	virtual void ActiveAbility(UGameObject* GO);
-	virtual void ActiveAbility2(UGameObject* GO);
-	virtual void PassiveAbility(UGameObject* GO);
-	virtual void PassiveAbility2(UGameObject* GO);
+	virtual void ActiveAbility(UGameObject* GameObject);
+	virtual void ActiveAbility2(UGameObject* GameObject);
+	virtual void PassiveAbility(UGameObject* GameObject);
+	virtual void PassiveAbility2(UGameObject* GameObject);
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
