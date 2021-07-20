@@ -28,6 +28,7 @@ void ASpawnPoint::MakeSpawnGrid()
 	if (HasAuthority())
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 4.f, FColor::Cyan, "Spawnpoint" + FString::FromInt(PlayerID));
+		
 		SpawnGrid = GetWorld()->SpawnActor<ASpawnGrid>(SpawnGridClass, GetActorLocation(), GetActorRotation());
 		SpawnGrid->MakeCardsSpawn(PlayerID);
 

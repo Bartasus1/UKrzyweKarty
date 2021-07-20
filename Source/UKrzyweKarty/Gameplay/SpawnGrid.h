@@ -8,8 +8,6 @@
 #include "Net/UnrealNetwork.h"
 #include "SpawnGrid.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCardsSpawned);
-
 UCLASS(ABSTRACT)
 class UKRZYWEKARTY_API ASpawnGrid : public AActor
 {
@@ -34,9 +32,6 @@ protected:
 	TArray <TSubclassOf<AKKCharacter>> SpawnCards;
 
 public:
-	UPROPERTY(BlueprintAssignable)
-	FCardsSpawned CardsSpawned;
-
 
 	
 	UPROPERTY(Replicated, BlueprintReadWrite, Category = "Cards")

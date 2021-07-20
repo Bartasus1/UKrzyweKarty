@@ -59,17 +59,20 @@ void AKKPlayer::BeginPlay()
 	{
 		GetWorld()->GetGameState<AKKGameState>()->CreatedMap.AddDynamic(this, &AKKPlayer::GetMapFromGameState);
 
-		TArray<AActor*> FoundActors;
-		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnPoint::StaticClass(), FoundActors);
-		
-		for (auto &Point : FoundActors)
-		{
-			if(ASpawnPoint* SpawnPoint = Cast<ASpawnPoint>(Point))
-			{
-				SpawnPoint->CardsSpawned.AddDynamic(this, &AKKPlayer::FindPlayerCards);
-			}
-
-		}
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::FromInt(1));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::FromInt(2));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::FromInt(3));
+		//TArray<AActor*> FoundActors;
+		//UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnPoint::StaticClass(), FoundActors);
+		//
+		//for (auto &Point : FoundActors)
+		//{
+		//	if(ASpawnPoint* SpawnPoint = Cast<ASpawnPoint>(Point))
+		//	{
+		//		SpawnPoint->CardsSpawned.AddDynamic(this, &AKKPlayer::FindPlayerCards);
+		//	}
+		//
+		//}
 		
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Player" + FString::FromInt(PlayerID));
 	}
